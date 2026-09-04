@@ -1,1 +1,7 @@
-
+ID,Data,Horário,Médico,Especialidade,Paciente,Telefone,Status
+0209-0900-Marcelo,02/09,09:00,Dr. Marcelo Andrade,Clínico Geral,,,Disponível
+0209-1130-Beatriz,02/09,11:30,Dra. Beatriz Nogueira,Pediatria,,,Disponível
+0209-1400-Rafael,02/09,14:00,Dr. Rafael Costa,Dermatologia,,,Disponível
+0209-1530-Helena,02/09,15:30,Dra. Helena Duarte,Cardiologia,,,Disponível
+0209-0900-Thiago,02/09,09:00,Dr. Thiago Barbosa,Ortopedia,,,Disponível
+0309-1400-Marcelo,03/09,14:00,Dr. Marcelo Andrade,Clínico Geral,João Silva,5511988887777,Agendado
