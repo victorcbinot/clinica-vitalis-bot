@@ -1,1 +1,195 @@
-
+{
+  "name": "Gerar Agenda Automática - Clínica Vitalis",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtHour": 22
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3daf0517-6b6b-4a6c-8de3-1b99fd40d75e",
+      "name": "Disparo Semanal"
+    },
+    {
+      "parameters": {
+        "jsCode": "const medicos = [\n  { nome: \"Dr. Marcelo Andrade\", especialidade: \"Clínico Geral\" },\n  { nome: \"Dra. Beatriz Nogueira\", especialidade: \"Pediatria\" },\n  { nome: \"Dr. Rafael Costa\", especialidade: \"Dermatologia\" },\n  { nome: \"Dra. Helena Duarte\", especialidade: \"Cardiologia\" },\n  { nome: \"Dr. Thiago Barbosa\", especialidade: \"Ortopedia\" },\n];\n\nconst horarios = [\"09:00\", \"11:30\", \"14:00\", \"15:30\"];\nconst diasUteisAFrente = 10;\n\nfunction formatarData(date) {\n  const dd = String(date.getDate()).padStart(2, '0');\n  const mm = String(date.getMonth() + 1).padStart(2, '0');\n  return `${dd}/${mm}`;\n}\n\nconst resultados = [];\nlet dataAtual = new Date();\nlet diasGerados = 0;\n\nwhile (diasGerados < diasUteisAFrente) {\n  dataAtual.setDate(dataAtual.getDate() + 1);\n  const diaSemana = dataAtual.getDay();\n  if (diaSemana === 0 || diaSemana === 6) continue;\n\n  const dataFormatada = formatarData(dataAtual);\n\n  for (const medico of medicos) {\n    for (const horario of horarios) {\n      const id = `${dataFormatada.replace('/', '')}-${horario.replace(':', '')}-${medico.nome.split(' ')[1]}`;\n      resultados.push({\n        json: {\n          ID: id,\n          Data: dataFormatada,\n          \"Horário\": horario,\n          \"Médico\": medico.nome,\n          Especialidade: medico.especialidade,\n          Paciente: \"\",\n          Telefone: \"\",\n          Status: \"Disponível\"\n        }\n      });\n    }\n  }\n\n  diasGerados++;\n}\n\nreturn resultados;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "5255ea67-dced-4471-a440-2eaf070066fe",
+      "name": "Gerar Horários Disponíveis"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1gVKL7WVObqef07AlfqXNotN2wzRwLzdpiqI76YvuiLs",
+          "mode": "list",
+          "cachedResultName": "Automação do N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gVKL7WVObqef07AlfqXNotN2wzRwLzdpiqI76YvuiLs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 471573707,
+          "mode": "list",
+          "cachedResultName": "Agenda",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gVKL7WVObqef07AlfqXNotN2wzRwLzdpiqI76YvuiLs/edit#gid=471573707"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Horário",
+              "displayName": "Horário",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Médico",
+              "displayName": "Médico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Especialidade",
+              "displayName": "Especialidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Paciente",
+              "displayName": "Paciente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "d9fb1370-e260-449d-9b48-ba20c6e955f8",
+      "name": "Atualizar Planilha de Agenda",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cd8LVd0xZvb2znsc",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Disparo Semanal": {
+      "main": [
+        [
+          {
+            "node": "Gerar Horários Disponíveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Horários Disponíveis": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Planilha de Agenda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e7e395f0-7366-464c-a963-dcd664c2d451",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "nodeGroups": [],
+  "id": "gG0UzHTaXzxwuMJB",
+  "tags": []
+}
