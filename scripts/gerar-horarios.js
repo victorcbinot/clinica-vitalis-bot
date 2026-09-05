@@ -11,6 +11,7 @@ const medicos = [
 
 const horarios = ["09:00", "11:30", "14:00", "15:30"];
 const diasUteisAFrente = 10;
+const diasSemana = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
 
 function formatarData(date) {
   const dd = String(date.getDate()).padStart(2, '0');
@@ -28,6 +29,7 @@ while (diasGerados < diasUteisAFrente) {
   if (diaSemana === 0 || diaSemana === 6) continue;
 
   const dataFormatada = formatarData(dataAtual);
+  const nomeDiaSemana = diasSemana[diaSemana];
 
   for (const medico of medicos) {
     for (const horario of horarios) {
@@ -36,6 +38,7 @@ while (diasGerados < diasUteisAFrente) {
         json: {
           ID: id,
           Data: dataFormatada,
+          DiaSemana: nomeDiaSemana,
           "Horário": horario,
           "Médico": medico.nome,
           Especialidade: medico.especialidade,
